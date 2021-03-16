@@ -68,13 +68,49 @@ const displayMovements = function (movements) {
     const html = ` <div class="movements__row">
     <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
     <div class="movements__date">3 days ago</div>
-  <div class="movements__value">${mov}</div>
+  <div class="movements__value">${mov}€</div>
 `;
 
     containerMovements.insertAdjacentHTML('afterbegin', html);
   });
 };
 displayMovements(account1.movements);
+
+const calcDisplayMovements = function (movements) {
+  const balance = movements.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = `${balance} €`;
+};
+
+calcDisplayMovements(account1.movements);
+
+const calcDisplaySummary = function (movements) {
+  const incomes = movements
+    .filter(mov => mov > 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumIn.textContent = `${incomes}€`;
+  const outcomes = movements
+    .filter(mov => mov < 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumOut.textContent = `${Math.abs(outcomes)}€`;
+  const interest = movements
+    .filter(mov => mov > 0)
+    .map(deposit => deposit * 0.012)
+    .filter(int => int >= 1)
+    .reduce((acc, int) => acc + int, 0);
+  labelSumInterest.textContent = `${interest}€`;
+};
+calcDisplaySummary(account1.movements);
+const createUsernames = function (accs) {
+  accs.forEach(function (acc) {
+    acc.username = acc.owner
+      .toLowerCase()
+      .split(' ')
+      .map(name => name[0])
+      .join('');
+  });
+};
+createUsernames(accounts);
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -86,6 +122,7 @@ const currencies = new Map([
 ]);
 
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
 /* 
 /////////////////////////////////////////////////
 // SLICE
@@ -186,7 +223,7 @@ petsResearch.forEach((age, i) => {
 checkDogs([9, 16, 6, 8, 3], [10, 5, 6, 1, 4]); */
 
 // LOOPING OVER THE ARRAY ** MAP / FOR OF
-const eurToUsd = 1.1;
+/* const eurToUsd = 1.1;
 
 const movementsUSD = movements.map(mov => mov * eurToUsd);
 
@@ -206,4 +243,84 @@ const movementsDescriptions = movements.map(
       mov
     )}`
 );
-console.log(movementsDescriptions);
+console.log(movementsDescriptions); */
+
+// FILTER
+/* 
+const deposits = movements.filter(mov => mov > 0);
+console.log(deposits);
+
+const withdrawls = movements.filter(mov => mov < 0);
+
+console.log(withdrawls);
+ */
+
+// REDUCE
+/* const balance = movements.reduce(
+  (acc, cur, i) =>
+    //console.log(`Iteration ${i}: ${acc}`);
+    acc + cur,
+  0
+);
+console.log(balance); */
+/* 
+const max = movements.reduce(
+  (acc, mov) => (acc > mov ? acc : mov),
+  movements[0]
+);
+console.log(max);
+ */
+/* const calcAverageHumanAge = function (ages) {
+  //humanAgeDogs =
+  ages.map(ages <= 2 ? 2 * ages : 16 + ages * 4);
+  console.log(ages);
+}; */
+// CHALLENGE #2
+/* const calcAverageHumanAge = function (ages) {
+  const humanAgeDogs = ages.map(ages => (ages <= 2 ? ages * 2 : 16 + ages * 4));
+
+  const humanAgefilter = humanAgeDogs.filter(age => age > 18); */
+
+/*   const av =
+    humanAgefilter.reduce((acc, age) => acc + age, 0) / humanAgefilter.length;
+  return av;
+ */
+/* const av = humanAgefilter.reduce(
+    (acc, age, i, arr) => acc + age / arr.length,
+    0
+  );
+  return av;
+};
+*/
+/* const calcAverageHumanAge = ages =>
+  ages
+    .map(ages => (ages <= 2 ? ages * 2 : 16 + ages * 4))
+    .filter(age => age > 18)
+    .reduce((acc, age, i, arr) => acc + age / arr.length, 0);
+
+console.log(calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3])); */
+/* 
+const eurToUsd = 1.1;
+
+const totalDepositsUSD = movements
+  .filter(mov => mov > 0)
+  .map(mov => mov * eurToUsd)
+  .reduce((acc, mov) => acc + mov, 0);
+console.log(totalDepositsUSD);
+ */
+/* 
+const firtWithDrawal = movements.find(mov => mov < 0);
+console.log(movements);
+console.log(firtWithDrawal);
+console.log(accounts);
+const account = accounts.find(acc => acc.owner === 'Jessica Davis');
+console.log(account);
+ */
+
+/* for (const acc of accounts) {
+  if (acc.owner === 'Jessica Davis') {
+    console.log(acc);
+  } else {
+  } 
+  //console.log(acc);
+} */
